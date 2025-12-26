@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Love Story Website</title>
+<!-- إضافات PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7f4aff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Love Story">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Segoe+Script&display=swap');
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe Script', cursive, 'Arial', sans-serif;
+    background: #c9aaff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #580d9e;
+  }
+  .container {
+    background: white;
+    padding: 20px 25px;
+    border-radius: 20px;
+    box-shadow: 0 6px 30px rgb(86 26 139 / 40%);
+    max-width: 350px;
+    text-align: center;
+    position: relative;
+  }
+  .hidden {
+    display: none;
+  }
+  .heart-shape {
+    margin: 0 auto 15px;
+    width: 130px;
+    height: 130px;
+    cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+  }
+  .heart-svg {
+    width: 100%;
+    height: 100%;
+    fill: #bca2f7;
+    pointer-events: none;
+  }
+  .heart-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Segoe Script', cursive;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2f085f;
+  }
+  h2.title {
+    font-size: 25px;
+    margin-bottom: 15px;
+  }
+  input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 18px;
+    border: 2px solid #7f4aff;
+    outline: none;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  button {
+    background: #7f4aff;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 35px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: #5b2bdc;
+  }
+  .back-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #ff6b6b;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .back-btn:hover {
+    background: #e55a5a;
+  }
+  #password-error {
+    color: red;
+    font-weight: bold;
+    display: none;
+    margin-bottom: 15px;
+  }
+  .love-letter, .memories-text, .final-message {
+    font-size: 16px;
+    margin-top: 10px;
+    line-height: 1.5;
+    color: #4d2aa4;
+  }
+  .carousel {
+    position: relative;
+    width: 280px;
+    height: 150px;
+    margin: 15px auto;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 5px 22px rgb(171 123 255 / 40%);
+  }
+  .carousel img, .carousel video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    transition: opacity 0.5s ease;
+    border: none;
+  }
+  .carousel img.active, .carousel video.active {
+    display: block;
+  }
+  .carousel-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .carousel-btn {
+    background: #7f4aff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .carousel-btn:hover {
+    background: #5b2bdc;
+  }
+  .audio-player {
+    width: 280px;
+    margin: 15px auto;
+    border-radius: 15px;
+    box-shadow: 0 5px 22px rgb(142 122 235 / 60%);
+  }
+  audio {
+    width: 100%;
+    border-radius: 15px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="page-heart">
+  <div class="heart-shape" id="heart" onclick="heartClick()">
+    <svg class="heart-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    <div class="heart-text">To My....<br><span style="font-family: cursive;">Lelo ♡</span></div>
+  </div>
+</div>
+
+<div class="container hidden" id="page-password">
+  <button class="back-btn" id="password-back">←</button>
+  <h2 class="title">Enter Password <span>💖</span></h2>
+  <input type="password" id="password-input" placeholder="Enter your secret..." />
+  <p id="password-error">أول مره شوفتك فيها ☺♥</p>
+  <button id="password-btn">Unlock 💜</button>
+</div>
+
+<div class="container hidden" id="page-story">
+  <button class="back-btn" id="story-back">←</button>
+  <h2 class="title">💖 Our Story</h2>
+  <p class="love-letter">
+    <span style="font-size:25px;">✉️</span> My Love Letter<br><br>
+    من أول لحظة شوفتك فيها،<br>
+    حسّيت إن حياتي اتلّونت بالفرحة والضحك والراحة. <span>💜</span><br><br>
+    أنت حكاياتي المفضّلة، وأجمل لحن في قلبي،<br>
+    وحتفضل طول العمر الشخص اللي قلبي اختاره. <span>🌚♥</span>
+  </p>
+  <button id="story-next">Next ⭐</button>
+</div>
+
+<div class="container hidden" id="page-memories">
+  <button class="back-btn" id="memories-back">←</button>
+  <h2 class="title">💖 Our Memories</h2>
+  <div class="audio-player">
+    <audio controls>
+      <source src="https://www.dropbox.com/scl/fi/7mnalgn76wm071d7yvhpw/_-_-_-_-_-_-_-_-_-MP3_160K.mp3?rlkey=7ncojpsucma54d4ylrcf3117f&st=kf6e0fno&dl=1" type="audio/mpeg">
+      متصفحك لا يدعم تشغيل الصوت.
+    </audio>
+  </div>
+  <h3 style="font-size: 18px; color: #4d2aa4; margin: 15px 0;">Our Photos & Videos 💕🎥</h3>
+  <div class="carousel" id="memories-carousel">
+    <img src="https://www.dropbox.com/scl/fi/v8dmkqefkmskea1ime5h8/5940250262603762821_119.jpg?rlkey=1dav2kyar9t1m99ond1ffnhrf&st=k2cnv4m6&dl=1" alt="صورة ذكريات 1" class="active" />
+    <img src="https://www.dropbox.com/scl/fi/7me4ulo7t2wt766k85q5e/5940250262603762819_119.jpg?rlkey=q5owendptxss907i3eax0w8ky&st=oh69pa2w&dl=1" alt="صورة ذكريات 2" />
+    <img src="https://www.dropbox.com/scl/fi/7knpzi3z2yy69niz01la7/5940250262603762818_119.jpg?rlkey=n07kcqvwrirg5a11nq57p0rsk&st=wccrlhl1&dl=1" alt="صورة ذكريات 3" />
+    <img src="https://www.dropbox.com/scl/fi/7ptdfr8gzpctj9d47dge0/5940250262603762817_119.jpg?rlkey=ay3pphyazzkjvfrbgj0i080eh&st=1u1mmgwj&dl=1" alt="صورة ذكريات 4" />
+    <video src="https://www.dropbox.com/scl/fi/1y63vosaf0rgkj9463584/5940250262143769338.mp4?rlkey=ofowir1whxlrx46nw6cxmv65r&st=b6x3sn8l&dl=1" controls preload="none" title="فيديو ذكريات 1"></video>
+    <video src="https://www.dropbox.com/scl/fi/74clp95yjz0sbj43xyesy/5940250262143769337.mp4?rlkey=dcuyj0qnqchwgkwbhpfqh3qmf&st=4lvxjj7o&dl=1" controls preload="none" title="فيديو ذكريات 2"></video>
+    <video src="https://www.dropbox.com/scl/fi/4qztj1ut7fnx75wa8tb67/5940250262143769335.mp4?rlkey=a2gujx7snep69vgl4r7rirn74&st=4uxy8z2s&dl=1" controls preload="none" title="فيديو ذكريات 3"></video>
+  </div>
+  <div class="carousel-buttons">
+    <button class="carousel-btn" id="prev-btn">‹</button>
+    <button class="carousel-btn" id="next-btn">›</button>
+  </div>
+  <p class="memories-text">
+    We've been together since <span>💜</span><br>
+    7/5/2023 <span>💜</span>
+  </p>
+  <button id="memories-next">Next 💖</button>
+</div>
+
+<div class="container hidden" id="page-final">
+  <button class="back-btn" id="final-back">←</button>
+  <h2 class="title">💜 Forever & Always</h2>
+  <p class="final-message">
+    مهما ودّتْنا الدنيا ولَّفت بينا...<br>
+    هتفضل دايماً أغلى حد عندي،<br>
+    وأمان قلبي، وبيتي اللي بيريح فيه <span>😍❤</span>
+  </p>
+</div>
+
+<script>
+  // تسجيل Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then((registration) => {
+          console.log('Service Worker registered:', registration);
+        })
+        .catch((error) => {
+          console.log('Service Worker registration failed:', error);
+        });
+    });
+  }
+
+  const pageHeart = document.getElementById('page-heart');
+  const pagePassword = document.getElementById('page-password');
+  const pageStory = document.getElementById('page-story');
+  const pageMemories = document.getElementById('page-memories');
+  const pageFinal = document.getElementById('page-final');
+
+  const heart = document.getElementById('heart');
+  const passwordInput = document.getElementById('password-input');
+  const passwordBtn = document.getElementById('password-btn');
+  const passwordError = document.getElementById('password-error');
+
+  const storyNext = document.getElementById('story-next');
+  const memoriesNext = document.getElementById('memories-next');
+
+  const passwordBack = document.getElementById('password-back');
+  const storyBack = document.getElementById('story-back');
+  const memoriesBack = document.getElementById('memories-back');
+  const finalBack = document.getElementById('final-back');
+
+  // دالة القلب (محدثة للتحقق)
+  function heartClick() {
+    console.log('Heart clicked! Transitioning to password page.');
+    pageHeart.classList.add('hidden');
+    pagePassword.classList.remove('hidden');
+  }
+
+  // Event listener إضافي للقلب (backup)
+  heart.addEventListener('click', () => {
+    console.log('Heart clicked via event listener!');
+    pageHeart.classList.add('hidden');
+    pagePassword.classList.remove('hidden');
+  });
+
+  // باقي الـ JavaScript كما هو
+  passwordBtn.addEventListener('click', () => {
+    let pass = passwordInput.value.trim();
+    if (pass === '12/2') {
+      passwordError.style.display = 'none';
+      pagePassword.classList.add('hidden');
+      pageStory.classList.remove('hidden');
+    } else {
+      passwordError.style.display = 'block';
+    }
+  });
+
+  storyNext.addEventListener('click', () => {
+    pageStory.classList.add('hidden');
+    pageMemories.classList.remove('hidden');
+    const audio = document.querySelector('audio');
+    if (audio) {
+      audio.play().catch(error => {
+        console.log('فشل التشغيل التلقائي:', error);
+      });
+    }
+  });
+
+  memoriesNext.addEventListener('click', () => {
+    pageMemories.classList.add('hidden');
+    pageFinal.classList.remove('hidden');
+  });
+
+  passwordBack.addEventListener('click', () => {
+    pagePassword.classList.add('hidden');
+    pageHeart.classList.remove('hidden');
+  });
+
+  storyBack.addEventListener('click', () => {
+    pageStory.classList.add('hidden');
+    pagePassword.classList.remove('hidden');
+  });
+
+  memoriesBack.addEventListener('click', () => {
+    pageMemories.classList.add('hidden');
+    pageStory.classList.remove('hidden');
+  });
+
+  finalBack.addEventListener('click', () => {
+    pageFinal.classList.add('hidden');
+    pageMemories.classList.remove('hidden');
+  });
+
+  // Carousel
+  const carousel = document.getElementById('memories-carousel');
+  const items = carousel.querySelectorAll('img, video');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  let currentIndex = 0;
+
+  function showItem(index) {
+    items.forEach((item, i) => {
+      item.classList.remove('active');
+      if (item.tagName === 'VIDEO') {
+        item.pause();
+      }
+    });
+    items[index].classList.add('active');
+  }
+
+  prevBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + items.length) % items.length;
+    showItem(currentIndex);
+  });
+
+  nextBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % items.length;
+    showItem(currentIndex);
+  });
+</script>
+</body>
+</html>
